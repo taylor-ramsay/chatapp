@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import Message from './message/Message'
 import ChatInput from './chatInput/ChatInput'
 import './FocusedChat.css';
+import { Badge } from 'react-bootstrap';
 
 import { subscribeToChat, subscribeToPrivateMessage } from '../../utils/sockets';
 
@@ -30,9 +31,16 @@ export default class FocusedChat extends Component {
 
   getUsersEmails = () => {
     const { focusedChat } = this.props;
+    const currentUserEmail = localStorage.getItem('userEmail');
     if (focusedChat.users && focusedChat.users.length > 0) {
       return focusedChat.users.map((user) => {
-        return user.email
+        if(user.email !== currentUserEmail){
+          return (
+            <Badge variant="secondary">
+              {user.email}
+            </Badge>
+          );
+        }
       });
     } else {
       return null;
@@ -54,18 +62,19 @@ export default class FocusedChat extends Component {
 
   render() {
     const { focusedChat, onSendMessage } = this.props;
-    const userEmails = this.getUsersEmails();
+    console.log('focusedChat:', focusedChat)
+    const userEmailsJSX = this.getUsersEmails();
     const messagesJSX = this.getMessages();
 
     return (
-      <div className='focused-chat'>
-        {userEmails && <h2>Chatting with {userEmails.toString()}</h2>}
+      <>
+        {userEmailsJSX}
         {messagesJSX}
+        {Object.entries(focusedChat).length > 0 ? 
         <ChatInput
           chatId={focusedChat._id}
-          onSendMessage={onSendMessage}
-        />
-      </div>
+          onSendMessage={onSendMessage}/> : <p>Select a conversion to start chatting.</p>}
+      </>
     );
   }
 }

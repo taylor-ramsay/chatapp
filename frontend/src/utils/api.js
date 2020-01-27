@@ -26,4 +26,8 @@ const getOpenChats = (userEmail) => {
   return axios.get(`${apiUrl}/get-open-chats/${userEmail}`)
 };
 
-export default { login, register, getUsers, createNewChat, getChat, getOpenChats };
+const patchChatWithNewMessage = (chatId, msg, fromEmail) => {
+  return axios.patch(`${apiUrl}/patch-chat`, { chatId, msg, fromEmail });
+};
+
+export default { login, register, getUsers, createNewChat, getChat, getOpenChats, patchChatWithNewMessage };

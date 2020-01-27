@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Typeahead } from 'react-bootstrap-typeahead';
-import { FormControl, InputGroup, Button } from 'react-bootstrap';
+import { Form, InputGroup, Button } from 'react-bootstrap';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import 'react-bootstrap-typeahead/css/Typeahead-bs4.css';
 
@@ -33,19 +33,20 @@ export class UserSelector extends Component {
           labelKey='email'
           multiple={multiple}
           options={options}
-          placeholder='Choose a state...'
+          placeholder='Select someone to chat with...'
           onChange={this.handleUserSelectorChange}
         />
         <InputGroup>
-          <FormControl
+          <Form.Check
             checked={multiple}
             onChange={(e) => this.setState({ multiple: e.target.checked })}
-            placeholder="Recipient's username"
+            label='Select multiple'
             type='checkbox' />
         </InputGroup>
+        <br />
         <Button
           onClick={this.handleButtonClick}>
-          Start new chat
+          Start new conversation
         </Button>
       </>
     );

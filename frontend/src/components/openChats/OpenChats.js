@@ -38,8 +38,17 @@ export default class OpenChats extends Component {
   render() {
     const { users, openChats } = this.state;
     const { setFocusedChat } = this.props;
+    const currentUserEmail = localStorage.getItem('userEmail');
     const openChatsJSX = openChats.map((chat, i) => {
-      const emails = (chat.users.map(u => u.email)).toString();
+      console.log('chat:', chat)
+      let emails;
+      const filteredEmails = chat.users.filter(u => u.email !== currentUserEmail);
+      console.log('filteredEmails:', filteredEmails)
+      if(filteredEmails.length === 1){
+        emails = filteredEmails[0].email;
+      } else {
+        emails = filteredEmails.map(e => e.email).join(', ');
+      }
       return (
         <OpenChat key={i} onChatClick={setFocusedChat} chatId={chat._id} emails={emails} />
       );
@@ -47,10 +56,14 @@ export default class OpenChats extends Component {
 
     return (
       <div>
+        <p>Available users:</p>
         <UserSelector
           options={users}
           onStartNewChat={this.startNewChat}
         />
+        <br />
+        <br />
+        <p>Open Conversations:</p>
         {openChatsJSX}
       </div>
     )

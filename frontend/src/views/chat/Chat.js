@@ -24,10 +24,9 @@ export class Chat extends Component {
     });
   }
 
-  handleSendMessage = () => {
-    // this.setState({
-    //   docusedMessages: [...this.state.focusedMessages]
-    // });
+  handleSendMessage = (msg, fromEmail) => {
+    const { focusedChat } = this.state;
+    api.patchChatWithNewMessage(focusedChat._id, msg, fromEmail);
   }
 
   setFocusedChat = async (chatId) => {

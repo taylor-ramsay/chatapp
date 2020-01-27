@@ -19,7 +19,7 @@ export class ChatInput extends Component {
 
   handleSend = () => {
     const { msg } = this.state;
-    const { chatId, onSendMessage } =this.props;
+    const { chatId, onSendMessage } = this.props;
     const from = localStorage.getItem('userEmail');
     const message = {
       msg,
@@ -27,7 +27,7 @@ export class ChatInput extends Component {
       chatId
     };
     sendPrivateMessage(message);
-    onSendMessage();
+    onSendMessage(msg, from);
   }
 
   render() {
