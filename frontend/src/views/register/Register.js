@@ -30,6 +30,8 @@ export class Register extends Component {
     if (email.length > 0 && password.length > 0) {
       api.register(email, password).then((res) => {
         if (res.data && res.data._id) {
+          localStorage.setItem('userId', res.data._id);
+          localStorage.setItem('userEmail', res.data.email);
           this.setState({
             success: <span>You're now registered, please <Link to='login'>login</Link> with the credential you just created.</span>
           });

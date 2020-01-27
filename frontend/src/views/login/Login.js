@@ -29,6 +29,8 @@ export class Login extends Component {
     if (email.length > 0 && password.length > 0) {
       api.login(email, password).then((res) => {
         if (res.data && res.data._id) {
+          localStorage.setItem('userId', res.data._id);
+          localStorage.setItem('userEmail', res.data.email);
           this.props.history.push('/chat');
         }
         else if (res.data) {

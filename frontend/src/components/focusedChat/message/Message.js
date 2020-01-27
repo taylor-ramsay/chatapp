@@ -1,10 +1,13 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
 
-const Message = () => {
+const Message = (props) => {
   return (
     <Card>
-      <Card.Body>Message</Card.Body>
+      <Card.Body>
+        From: {props.from}
+        Msg: {props.msg}
+      </Card.Body>
     </Card>
   );
 }

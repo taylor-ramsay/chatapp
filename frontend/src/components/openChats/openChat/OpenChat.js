@@ -1,12 +1,14 @@
-import React, { Component } from 'react'
+import React from 'react';
 import { Card } from 'react-bootstrap';
 
-export default class OpenChat extends Component {
-  render() {
-    return (
-      <Card>
-        <Card.Body>OpenChat</Card.Body>
-      </Card>
-    )
-  }
+const OpenChat = (props) => {
+  const { onChatClick, chatId, emails } = props;
+  return (
+    <Card onClick={() => onChatClick(chatId)}>
+      <Card.Title>{emails}</Card.Title>
+    </Card>
+  );
 }
+
+export default OpenChat;
+
