@@ -1,0 +1,12 @@
+p {
+  margin: 0;
+}
+.chat-group-link {
+  color: #007bff;
+  cursor: pointer;
+}
+.chat-group-link:hover {
+  color: #0056b3;
+  text-decoration: underline;
+  cursor: pointer;
+}

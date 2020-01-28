@@ -1,15 +1,15 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import './ChatGroup.css';
 
-const OpenChat = (props) => {
+const ChatGroup = (props) => {
   const { onChatClick, chatId, emails } = props;
   return (
     <Card onClick={() => onChatClick(chatId)}>
-      <Card.Title><Link>{emails}</Link></Card.Title>
+      <Card.Title><p className='chat-group-link'>{emails}</p></Card.Title>
     </Card>
   );
 }
 
-export default OpenChat;
+export default ChatGroup;
 

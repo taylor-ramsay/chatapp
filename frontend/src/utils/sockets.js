@@ -1,28 +1,44 @@
 import io from 'socket.io-client';
 const socket = io('http://localhost:5000/');
 
-const setConnectedChat = (chatId) => {
-  socket.emit('setConnectedChat', { chatId });
+const connectToChat = (userId) => {
+  socket.emit('connectToChat', { userId });
 };
 
-const subscribeToChat = (cb) => {
-  socket.on('news', (res) => {
+const startNewChatGroup = (chatGroup) => {
+  socket.emit('startNewChatGroup', { chatGroup });
+};
+
+const subscribeToJoinNewChatGroup = (cb) => {
+  socket.on('joinNewChatGroup', (res) => {
     cb(null, res);
   });
+};
+
+const setConnectedChat = (chatId) => {
+  socket.emit('setConnectedChat', { chatId });
 };
 
 const transmitMessage = (msg) => {
   socket.emit('transmitMessage', msg);
 };
 
-const sendPrivateMessage = (msg) => {
-  socket.emit('sendPrivateMessage', msg);
+const sendGroupMessage = (msg) => {
+  socket.emit('sendGroupMessage', msg);
 };
 
-const subscribeToPrivateMessage = (cb) => {
-  socket.on('subscribeToPrivateMessage', (res) => {
+const subscribeToGroupMessage = (cb) => {
+  socket.on('subscribeToGroupMessage', (res) => {
     cb(null, res);
   });
 };
 
-export { subscribeToChat, transmitMessage, setConnectedChat, sendPrivateMessage, subscribeToPrivateMessage };
+export {
+  transmitMessage, 
+  setConnectedChat, 
+  sendGroupMessage,
+  subscribeToGroupMessage, 
+  connectToChat, 
+  startNewChatGroup, 
+  subscribeToJoinNewChatGroup
+};

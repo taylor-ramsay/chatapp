@@ -6,6 +6,11 @@ const login = (email, password) => {
   return axios.post(`${apiUrl}/login`, { email, password });
 };
 
+const logout = () => {
+  localStorage.removeItem('userId');
+  localStorage.removeItem('userEmail');
+};
+
 const register = (email, password) => {
   return axios.post(`${apiUrl}/register`, { email, password });
 };
@@ -14,20 +19,20 @@ const getUsers = () => {
   return axios.get(`${apiUrl}/get-users`);
 };
 
-const createNewChat = (users) => {
-  return axios.post(`${apiUrl}/create-new-chat`, { users });
+const createNewChatGroup = (users) => {
+  return axios.post(`${apiUrl}/create-new-chat-group`, { users });
 };
 
 const getChat = (chatId) => {
   return axios.get(`${apiUrl}/get-chat/${chatId}`);
 };
 
-const getOpenChats = (userEmail) => {
-  return axios.get(`${apiUrl}/get-open-chats/${userEmail}`)
+const getChatGroups = (userEmail) => {
+  return axios.get(`${apiUrl}/get-chat-groups/${userEmail}`)
 };
 
 const patchChatWithNewMessage = (chatId, msg, fromEmail) => {
   return axios.patch(`${apiUrl}/patch-chat`, { chatId, msg, fromEmail });
 };
 
-export default { login, register, getUsers, createNewChat, getChat, getOpenChats, patchChatWithNewMessage };
+export default { login, register, getUsers, createNewChatGroup, getChat, getChatGroups, patchChatWithNewMessage, logout };

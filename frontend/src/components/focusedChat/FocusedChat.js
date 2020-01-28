@@ -5,38 +5,16 @@ import ChatInput from './chatInput/ChatInput'
 import './FocusedChat.css';
 import { Badge } from 'react-bootstrap';
 
-import { subscribeToChat, subscribeToPrivateMessage } from '../../utils/sockets';
-
 export default class FocusedChat extends Component {
-
-  componentDidMount() {
-    const { onMessageReceived } = this.props;
-
-    subscribeToChat((err, res) => {
-      console.log("subscribed", res);
-      console.log("subscribed", err);
-    });
-
-    subscribeToPrivateMessage((err, res) => {
-      if (res) {
-        const newMessage = {
-          fromEmail: res.from,
-          msg: res.msg
-        };
-        onMessageReceived(newMessage);
-      }
-    });
-
-  }
 
   getUsersEmails = () => {
     const { focusedChat } = this.props;
     const currentUserEmail = localStorage.getItem('userEmail');
     if (focusedChat.users && focusedChat.users.length > 0) {
-      return focusedChat.users.map((user) => {
+      return focusedChat.users.map((user, i) => {
         if(user.email !== currentUserEmail){
           return (
-            <Badge variant="secondary">
+            <Badge key={i} variant="secondary">
               {user.email}
             </Badge>
           );
@@ -62,7 +40,6 @@ export default class FocusedChat extends Component {
 
   render() {
     const { focusedChat, onSendMessage } = this.props;
-    console.log('focusedChat:', focusedChat)
     const userEmailsJSX = this.getUsersEmails();
     const messagesJSX = this.getMessages();
 
@@ -72,7 +49,7 @@ export default class FocusedChat extends Component {
         {messagesJSX}
         {Object.entries(focusedChat).length > 0 ? 
         <ChatInput
-          chatId={focusedChat._id}
+          chatGroup={focusedChat}
           onSendMessage={onSendMessage}/> : <p>Select a conversion to start chatting.</p>}
       </>
     );

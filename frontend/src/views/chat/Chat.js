@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col } from 'react-bootstrap';
 
-import OpenChats from '../../components/openChats/OpenChats';
+import ChatGroups from '../../components/chatGroups/ChatGroups';
 import FocusedChat from '../../components/focusedChat/FocusedChat';
+import Navigation from '../../components/navigation/Navigation'
 
-import { setConnectedChat } from '../../utils/sockets';
+import { setConnectedChat, subscribeToGroupMessage, connectToChat, startNewChatGroup, subscribeToJoinNewChatGroup } from '../../utils/sockets';
 import api from '../../utils/api';
 
 export class Chat extends Component {
@@ -14,14 +15,44 @@ export class Chat extends Component {
     super()
     this.state = {
       focusedChat: {},
-      focusedMessages: []
+      focusedMessages: [],
+      users: [],
+      chatGroups: []
     };
   }
 
-  handleMessageReceived = (message) => {
-    this.setState({
-      focusedMessages: [...this.state.focusedMessages, message]
+  async componentDidMount() {
+    const currentUserId = localStorage.getItem('userId');
+
+    connectToChat(currentUserId);
+
+    subscribeToJoinNewChatGroup((err, res) => {
+      if (res) {
+        const chatGroupsWithoutNewGroup = this.state.chatGroups.filter(c => c._id !== res.chatGroup._id);
+        this.setState({
+          chatGroups: [...chatGroupsWithoutNewGroup, res.chatGroup]
+        });
+      }
     });
+
+    subscribeToGroupMessage((err, res) => {
+      if (res) {
+        const newMessage = {
+          fromEmail: res.from,
+          msg: res.msg,
+          chatId: res.chatGroup._id
+        };
+        this.setState({
+          focusedMessages: [...this.state.focusedMessages, newMessage],
+        });
+      }
+    });
+
+    const users = (await api.getUsers()).data;
+    const currentUserEmail = localStorage.getItem('userEmail');
+    const chatGroups = (await api.getChatGroups(currentUserEmail)).data;
+    await this.setState({ users, chatGroups });
+
   }
 
   handleSendMessage = (msg, fromEmail) => {
@@ -33,21 +64,43 @@ export class Chat extends Component {
     const focusedChat = (await api.getChat(chatId)).data;
     const focusedMessages = focusedChat.msgHistory ? focusedChat.msgHistory : [];
     setConnectedChat(focusedChat._id);
-    this.setState({ 
+    this.setState({
       focusedChat,
       focusedMessages
     });
   };
 
+  startNewChat = async (users) => {
+    const currentUser = {
+      id: localStorage.getItem('userId'),
+      email: localStorage.getItem('userEmail')
+    };
+    const allUsers = [...users, currentUser];
+    const newChatGroup = (await api.createNewChatGroup(allUsers)).data;
+    this.setState({
+      chatGroups: [...this.state.chatGroups, newChatGroup]
+    });
+    startNewChatGroup(newChatGroup);
+  }
+
   render() {
-    const { focusedChat, focusedMessages } = this.state;
+    const { focusedChat, focusedMessages, users, chatGroups } = this.state;
+    const usersEmail = localStorage.getItem('userEmail');
+
     return (
-      <div>
+      <>
+        <Navigation
+          title={"ChatApp"}
+          emailAddress={usersEmail}
+        />
         <Container>
           <Row>
             <Col md={4}>
-              <OpenChats
+              <ChatGroups
                 setFocusedChat={this.setFocusedChat}
+                users={users}
+                chatGroups={chatGroups}
+                onStartNewChat={this.startNewChat}
               />
             </Col>
             <Col md={8}>
@@ -55,12 +108,11 @@ export class Chat extends Component {
                 focusedChat={focusedChat}
                 messages={focusedMessages}
                 onSendMessage={this.handleSendMessage}
-                onMessageReceived={this.handleMessageReceived}
               />
             </Col>
           </Row>
         </Container>
-      </div>
+      </>
     );
   }
 }

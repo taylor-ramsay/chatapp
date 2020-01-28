@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { InputGroup, FormControl, Button } from 'react-bootstrap';
 
-import { sendPrivateMessage } from '../../../utils/sockets';
+import { sendGroupMessage } from '../../../utils/sockets';
 
 export class ChatInput extends Component {
 
@@ -19,14 +19,14 @@ export class ChatInput extends Component {
 
   handleSend = () => {
     const { msg } = this.state;
-    const { chatId, onSendMessage } = this.props;
+    const { chatGroup, onSendMessage } = this.props;
     const from = localStorage.getItem('userEmail');
     const message = {
       msg,
       from,
-      chatId
+      chatGroup,
     };
-    sendPrivateMessage(message);
+    sendGroupMessage(message);
     onSendMessage(msg, from);
   }
 
