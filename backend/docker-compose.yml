@@ -1,0 +1,19 @@
+version: "3"
+services:
+  api:
+    container_name: chat-app-api
+    restart: always
+    build: ./
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+    links:
+      - mongo
+  mongo:
+    container_name: chat-app-mongo
+    image: mongo
+    ports:
+      - "27017:27017"
+
+ #Refence: https://dev.to/jay97/docker-compose-an-express-and-mongo-app-aai
