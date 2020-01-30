@@ -1,0 +1,11 @@
+.register-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+  
+.register-card {
+  width: 500px;
+  padding: 40px;
+  margin-top: 20px;
+}

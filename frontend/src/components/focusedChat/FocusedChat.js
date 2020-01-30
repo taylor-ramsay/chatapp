@@ -12,7 +12,7 @@ export default class FocusedChat extends Component {
     const currentUserEmail = localStorage.getItem('userEmail');
     if (focusedChat.users && focusedChat.users.length > 0) {
       return focusedChat.users.map((user, i) => {
-        if(user.email !== currentUserEmail){
+        if (user.email !== currentUserEmail) {
           return (
             <Badge key={i} variant="secondary">
               {user.email}
@@ -26,7 +26,7 @@ export default class FocusedChat extends Component {
   }
 
   getMessages = () => {
-    const { messages } = this.props; 
+    const { messages } = this.props;
     return messages.map((msg, i) => {
       return (
         <Message
@@ -47,10 +47,10 @@ export default class FocusedChat extends Component {
       <>
         {userEmailsJSX}
         {messagesJSX}
-        {Object.entries(focusedChat).length > 0 ? 
-        <ChatInput
-          chatGroup={focusedChat}
-          onSendMessage={onSendMessage}/> : <p>Select a conversion to start chatting.</p>}
+        {Object.entries(focusedChat).length > 0 ?
+          <ChatInput
+            chatGroup={focusedChat}
+            onSendMessage={onSendMessage} /> : <p>Select a conversion to start chatting.</p>}
       </>
     );
   }

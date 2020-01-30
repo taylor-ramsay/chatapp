@@ -3,10 +3,11 @@ import ChatGroup from './chatGroup/ChatGroup'
 import UserSelector from './userSelector/UserSelector';
 
 export default class ChatGroups extends Component {
-
+  
   render() {
     const { setFocusedChat, onStartNewChat, users, chatGroups } = this.props;
     const currentUserEmail = localStorage.getItem('userEmail');
+
     const chatGroupsJSX = chatGroups.map((chat, i) => {
       let emails;
       const filteredEmails = chat.users.filter(u => u.email !== currentUserEmail);

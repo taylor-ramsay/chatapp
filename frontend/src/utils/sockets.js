@@ -1,5 +1,5 @@
 import io from 'socket.io-client';
-const socket = io('http://localhost:5000/');
+const socket = io('http://localhost:8080/');
 
 const connectToChat = (userId) => {
   socket.emit('connectToChat', { userId });
@@ -19,10 +19,6 @@ const setConnectedChat = (chatId) => {
   socket.emit('setConnectedChat', { chatId });
 };
 
-const transmitMessage = (msg) => {
-  socket.emit('transmitMessage', msg);
-};
-
 const sendGroupMessage = (msg) => {
   socket.emit('sendGroupMessage', msg);
 };
@@ -34,7 +30,6 @@ const subscribeToGroupMessage = (cb) => {
 };
 
 export {
-  transmitMessage, 
   setConnectedChat, 
   sendGroupMessage,
   subscribeToGroupMessage, 

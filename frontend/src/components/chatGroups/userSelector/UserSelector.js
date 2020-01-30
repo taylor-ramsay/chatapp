@@ -10,7 +10,7 @@ export class UserSelector extends Component {
     super()
     this.state = {
       multiple: false,
-      selectedUsers: []
+      selectedUsers: [],
     };
   }
 
@@ -19,20 +19,26 @@ export class UserSelector extends Component {
   }
 
   handleButtonClick = () => {
-    this.props.onStartNewChat(this.state.selectedUsers);
+    const { selectedUsers } = this.state;
+    if(selectedUsers && selectedUsers.length > 0){
+      this.props.onStartNewChat(this.state.selectedUsers);
+    }
   }
 
   render() {
-    const { multiple } = this.state;
+    const { multiple, selectedUsers } = this.state;
     const { options } = this.props;
-
+    const userId = localStorage.getItem('userEmail');
+    const users = options.filter(o => o.email !== userId);
+    
     return (
       <>
         <Typeahead
           id='userSelector'
           labelKey='email'
           multiple={multiple}
-          options={options}
+          options={selectedUsers.length > 8 ? [] : users}
+          emptyLabel={selectedUsers.length > 8 ? 'Only 10 users are allowed' : 'No matches found.'}
           placeholder='Select someone to chat with...'
           onChange={this.handleUserSelectorChange}
         />

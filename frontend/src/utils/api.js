@@ -1,14 +1,13 @@
 import axios from 'axios';
 
-const apiUrl = 'http://localhost:5000';
+const apiUrl = 'http://localhost:8080';
 
 const login = (email, password) => {
   return axios.post(`${apiUrl}/login`, { email, password });
 };
 
-const logout = () => {
-  localStorage.removeItem('userId');
-  localStorage.removeItem('userEmail');
+const logout = (userId) => {
+  return axios.post(`${apiUrl}/logout`, { userId });
 };
 
 const register = (email, password) => {

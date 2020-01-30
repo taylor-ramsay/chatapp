@@ -81,7 +81,19 @@ export class Chat extends Component {
       chatGroups: [...this.state.chatGroups, newChatGroup]
     });
     startNewChatGroup(newChatGroup);
+    this.setFocusedChat(newChatGroup._id);
   }
+
+  handleLogout = (setLogin) => {
+    api.logout().then((res) => {
+      if(res.status === 200){
+        setLogin(false);
+        localStorage.removeItem('userId');
+        localStorage.removeItem('userEmail');
+        this.props.history.push('/login');
+      }
+    });
+  };
 
   render() {
     const { focusedChat, focusedMessages, users, chatGroups } = this.state;
@@ -92,6 +104,7 @@ export class Chat extends Component {
         <Navigation
           title={"ChatApp"}
           emailAddress={usersEmail}
+          onLogout={this.handleLogout}
         />
         <Container>
           <Row>
