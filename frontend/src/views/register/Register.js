@@ -31,7 +31,6 @@ export class Register extends Component {
     const { email, password } = this.state;
     if (email.length > 0 && password.length > 0) {
       api.register(email, password).then((res) => {
-        console.log('res:', res)
         if (res.data && res.data._id) {
           localStorage.setItem('userId', res.data._id);
           localStorage.setItem('userEmail', res.data.email);

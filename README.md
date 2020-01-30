@@ -17,6 +17,10 @@ Navigate to to the root folder and run the following commands to setup the front
 Navigate back to the root folder and run the following commands to setup the backend:
 `cd backend`
 `docker-compose up -d`
+`docker exec -it chat-app-api /bin/bash`
+`npm install`
+`exit`
+`docker restart-chat-app-api`
 
 ##Resources
 https://app.pluralsight.com/library/courses/real-time-web-nodejs/table-of-contents

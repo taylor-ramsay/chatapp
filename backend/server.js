@@ -9,11 +9,12 @@ const User = require('./models/User');
 const ChatGroup = require('./models/ChatGroup');
 
 //DATABASE
-mongoose.connect('mongodb://mongo:27017/chatapp', {
+mongoose.connect('mongodb://localhost:27017/chatapp', {
   'useFindAndModify': true,
   'useNewUrlParser': true,
   'useUnifiedTopology': true
 });
+// mongoose.connect('mongodb://mongo:27017/chatapp');
 const db = mongoose.connection;
 db.on('open', () => {
   console.log('connected to mongodb!')

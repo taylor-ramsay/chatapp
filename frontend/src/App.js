@@ -20,10 +20,7 @@ export class App extends Component {
   };
 
   render() {
-
     const { loggedIn } = this.state;
-    console.log('loggedIn:', loggedIn)
-
     return (
       <>
         <Router>
