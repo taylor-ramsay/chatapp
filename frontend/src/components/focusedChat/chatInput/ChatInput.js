@@ -28,12 +28,16 @@ export class ChatInput extends Component {
     };
     sendGroupMessage(message);
     onSendMessage(msg, from);
+    this.setState({ msg: '' });
   }
 
   render() {
+    const { msg } = this.state;
+    
     return (
       <InputGroup className="mb-3">
         <FormControl
+          value={msg}
           placeholder="Say hello"
           aria-label="Say hello"
           aria-describedby="basic-addon2"
